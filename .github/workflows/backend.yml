@@ -4,8 +4,7 @@ on:
   push:
     branches: [ "web" ]  
     paths:
-      - '**/*.java'  
-
+      - 'backend/backend/**/*.java' 
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
@@ -23,10 +22,11 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('backend/backend/pom.xml') }}  # Cache based on backend POM
           restore-keys: ${{ runner.os }}-maven-
 
       - name: Build and Test with Maven
+        working-directory: backend/backend  
         run: mvn clean package  
 
   deploy-to-main:
