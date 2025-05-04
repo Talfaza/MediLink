@@ -3,6 +3,8 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ "web" ]  
+    paths:
+      - '**/*.java'  
 
 jobs:
   test-and-build:
@@ -26,7 +28,7 @@ jobs:
 
       - name: Build and Test with Maven
         run: mvn clean package  
-        
+
   deploy-to-main:
     needs: test-and-build  
     runs-on: ubuntu-latest
@@ -45,7 +47,7 @@ jobs:
         run: |
           git fetch origin main
           git checkout main
-          git merge web --no-edit  # Merge changes from web into main
+          git merge web --no-edit  
           git push origin main
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for auth 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
